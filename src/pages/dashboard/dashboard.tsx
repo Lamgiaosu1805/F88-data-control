@@ -1,84 +1,88 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "@route/AppRoutes";
 import { useAuthenticationStore } from "@hooks/authentication";
 import { Paper } from "@mui/material";
-import { Table, TableProps } from "antd";
+import { Table, TableProps, DatePicker } from "antd";
+
+const { RangePicker } = DatePicker;
 
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+	// id: string;
+	date: Date;
+	totalGuests: number;
 }
 
 const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-  },
-  {
-    title: "Action",
-    key: "action",
-  },
+	{
+		title: "Ngày",
+		dataIndex: "date",
+		key: "date",
+		render: (date) => <p className="font-semibold">{date.toLocaleDateString("vi-VN")}</p>,
+		sorter: (a, b) => a.date.getTime() - b.date.getTime(),
+		// baseURL: 'http://192.168.1.68:2993'
+	},
+	{
+		title: "Tổng số khách hàng",
+		dataIndex: "totalGuests",
+		key: "totalGuests",
+		sorter: (a, b) => a.totalGuests - b.totalGuests,
+		// dataIndex: "tags",
+	},
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
 export const DashBoard = memo(() => {
-  const navigation = useNavigate();
-  const { dispatchLogOut } = useAuthenticationStore();
-  const onNavigateStaff = () => {
-    navigation(AppRoutes.staff.index);
-  };
+	const navigate = useNavigate();
+	const { dispatchLogOut } = useAuthenticationStore();
+	const [rangePicker, setRangePicker] = useState<any>(null);
+	// const onNavigateStaff = () => {
+	// 	navigation(AppRoutes.staff.index);
+	// };
 
-  const onLogout = () => {
-    // localStorage.removeItem(COMMONKEY.TOKEN)
-    dispatchLogOut();
-  };
-  return (
-    <div style={{ padding: 12 }}>
-      <h1>Welcome to dashboard of VNFITE</h1>
-      <button
+	const [data, setData] = useState<DataType[]>([
+		{
+			date: new Date(),
+			totalGuests: 32,
+		},
+		{
+			date: new Date("2024-12-01"),
+			totalGuests: 12,
+		},
+	]);
+
+	const onLogout = () => {
+		// localStorage.removeItem(COMMONKEY.TOKEN)
+		dispatchLogOut();
+	};
+
+	const onDateChange = (values: any) => {
+		console.log(values);
+		// if (!values) {
+		// 	setLoading(true);
+		// 	fetchData();
+		// 	setLoading(false);
+		// 	return;
+		// }
+		const [startDate, endDate] = values.map((date: any) => new Date(date));
+
+		// Set startDate to the start of the day (00:00:00.000) and endDate to the end of the day (23:59:59.999)
+		startDate.setHours(0, 0, 0, 0);
+		endDate.setHours(23, 59, 59, 999);
+
+		const filtedData = data.filter((item) => {
+			const date = new Date(item.date);
+
+			// console.log('D', date, startDate, endDate);
+			return date >= startDate && date <= endDate;
+		});
+
+		setData(filtedData);
+	};
+
+	console.log("HI", rangePicker, data);
+	return (
+		<div style={{ padding: 12 }}>
+			{/* <button
         style={{
           borderWidth: 1,
           padding: "10px 20px",
@@ -101,10 +105,31 @@ export const DashBoard = memo(() => {
         type="button"
       >
         Logout
-      </button>
-      <Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
-        <Table<DataType> columns={columns} dataSource={data} />
-      </Paper>
-    </div>
-  );
+      </button> */}
+			<Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
+				<RangePicker
+					value={rangePicker}
+					style={{ marginBottom: 12 }}
+					onChange={setRangePicker}
+					format="DD/MM/YYYY"
+				/>
+				<Table<DataType>
+					columns={columns}
+					dataSource={
+						rangePicker
+							? data.filter(
+									(item) =>
+										item.date >= rangePicker[0].$d &&
+										item.date.getTime() <= new Date(rangePicker[1].$d).setHours(23, 59, 59, 999)
+									// eslint-disable-next-line no-mixed-spaces-and-tabs
+							  )
+							: data
+					}
+					onRow={(record) => ({
+						onClick: () => navigate(AppRoutes.customers.list, { state: { date: record.date || null } }),
+					})}
+				/>
+			</Paper>
+		</div>
+	);
 });
