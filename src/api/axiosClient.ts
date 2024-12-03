@@ -2,7 +2,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { store } from "@store/index";
 
 const axiosClient = axios.create({
-  baseURL: "http://14.224.135.196:2000/",
+  baseURL: "",
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
