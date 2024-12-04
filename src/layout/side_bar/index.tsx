@@ -25,14 +25,14 @@ function getItem(
 
 const items: MenuProps["items"] = [
 	getItem("DashBoard", AppRoutes.dashboard),
-	getItem("Quản lý nhân viên", "1", <></>, [
-		getItem("Danh sách nhân viên", AppRoutes.staff.index),
-		getItem("Giao việc", "Option 2"),
-	]),
-	getItem("Quản lý phòng ban", "department", <> </>, [
-		getItem("Danh sách phòng ban", AppRoutes.department.index),
-		// getItem("Giao việc", "Option 2"),
-	]),
+	// getItem("Quản lý nhân viên", "1", <></>, [
+	// 	getItem("Danh sách nhân viên", AppRoutes.staff.index),
+	// 	getItem("Giao việc", "Option 2"),
+	// ]),
+	// getItem("Quản lý phòng ban", "department", <> </>, [
+	// 	getItem("Danh sách phòng ban", AppRoutes.department.index),
+	// getItem("Giao việc", "Option 2"),
+	// ]),
 	//   getItem(
 	//     "Users",
 	//     "Users",

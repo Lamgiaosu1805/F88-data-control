@@ -1,15 +1,21 @@
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import { PropsWithChildren, Suspense, memo } from "react";
 // import "./style.css";
 import NavigationScroll from "@layout/scroll.tsx";
 import LogoWithText from "../assets/svg/logo_with_text.svg";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
 import SideBar from "./side_bar";
-import NotificationHeader from "@components/notification";
-import SettingHeader from "@components/setting";
+
+import { useAuthenticationStore } from "@hooks/authentication";
+import { LogoutOutlined } from "@ant-design/icons";
 type Props = PropsWithChildren<{ customStyle?: React.CSSProperties }>;
 export const WrapLayout = memo(({ children }: Props) => {
+	const { dispatchLogOut } = useAuthenticationStore();
+
+	const onLogout = () => {
+		// localStorage.removeItem(COMMONKEY.TOKEN)
+		dispatchLogOut();
+	};
 	return (
 		<NavigationScroll>
 			<Suspense fallback={<Spin />}>
@@ -25,7 +31,7 @@ export const WrapLayout = memo(({ children }: Props) => {
 						<img src={LogoWithText} width={200} height={"auto"} alt="" />
 					</div>
 					<div>
-						<div
+						{/* <div
 							style={{
 								borderRadius: 16,
 								borderColor: "#ED2F1D",
@@ -35,15 +41,18 @@ export const WrapLayout = memo(({ children }: Props) => {
 								columnGap: 16,
 								backgroundColor: "#F4DEDE33",
 							}}
-						>
-							<NotificationHeader />
-							<SettingHeader />
-							<Avatar
+						> */}
+						{/* <NotificationHeader /> */}
+						{/* <SettingHeader /> */}
+						{/* <Avatar
 								alt="Remy Sharp"
 								src="/static/images/avatar/1.jpg"
 								style={{ width: 32, height: 32 }}
-							/>
-						</div>
+							/> */}
+						<Button size="large" type="default" onClick={onLogout} danger icon={<LogoutOutlined />}>
+							Đăng Xuất
+						</Button>
+						{/* </div> */}
 					</div>
 				</div>
 				<Grid container spacing={0}>
