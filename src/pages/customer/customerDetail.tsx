@@ -53,7 +53,7 @@ const CustomerDetail = () => {
 		fetchData();
 	}, []);
 
-	console.log(data.identityInfo);
+	console.log(data);
 	return (
 		<div className="p-4">
 			<Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
@@ -76,7 +76,12 @@ const CustomerDetail = () => {
 					{renderKeyValue("Quận", data.customerInfo?.district)}
 					{renderKeyValue("Email", data.customerInfo?.mail)}
 					{renderKeyValue("Công việc", data.customerInfo?.job)}
-					{renderKeyValue("Nơi làm việc", data.customerInfo?.work_place, true)}
+					{renderKeyValue("Nơi làm việc", data.customerInfo?.work_place)}
+					{renderKeyValue(
+						"Tài sản thế chấp",
+						data.formPushInfo?.asset_type_id == 17 ? "Xe máy" : "Ô tô",
+						true
+					)}
 				</div>
 			</Paper>
 		</div>
