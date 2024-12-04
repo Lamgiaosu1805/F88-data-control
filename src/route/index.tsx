@@ -1,10 +1,11 @@
-import { createBrowserRouter, Route } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { DashBoard } from "@pages/dashboard";
 import { AppRoutes } from "./AppRoutes";
 import { PrivateRoute } from "@components/private-route";
 import { Login } from "@pages/auth/login";
 import { WrapLayout } from "@layout/wrap-layout";
-import CustomerList from "@pages/dashboard/customersList";
+import CustomerList from "@pages/customer/customersList";
+import CustomerDetail from "@pages/customer/customerDetail";
 
 export const routerCMS = () => {
 	return createBrowserRouter([
@@ -29,6 +30,10 @@ export const routerCMS = () => {
 				{
 					path: AppRoutes.customers.list,
 					element: <CustomerList />,
+				},
+				{
+					path: AppRoutes.customers.detail,
+					element: <CustomerDetail />,
 				},
 			],
 		},

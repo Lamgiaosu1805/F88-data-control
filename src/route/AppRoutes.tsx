@@ -4,6 +4,7 @@ export const AppRoutes = {
 	dashboard: "/",
 	customers: {
 		list: "/customers",
+		detail: "/customer",
 	},
 	auth: {
 		root: "/auth",

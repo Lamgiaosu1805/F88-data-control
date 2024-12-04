@@ -1,130 +1,73 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "@route/AppRoutes";
-import { useAuthenticationStore } from "@hooks/authentication";
 import { Paper } from "@mui/material";
-import { Table, TableProps, DatePicker } from "antd";
+import { Table, TableProps, DatePicker, Button } from "antd";
+import { DataForDate } from "@utils/types";
+import { getNumberOfDataForDate } from "@api/authentication";
 
-const { RangePicker } = DatePicker;
-
-interface DataType {
-	// id: string;
-	date: Date;
-	totalGuests: number;
-}
-
-const columns: TableProps<DataType>["columns"] = [
+const columns: TableProps<DataForDate>["columns"] = [
 	{
 		title: "Ngày",
 		dataIndex: "date",
 		key: "date",
-		render: (date) => <p className="font-semibold">{date.toLocaleDateString("vi-VN")}</p>,
-		sorter: (a, b) => a.date.getTime() - b.date.getTime(),
-		// baseURL: 'http://192.168.1.68:2993'
+		render: (date) => <p className="font-semibold">{date}</p>,
+		// sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
 	},
 	{
 		title: "Tổng số khách hàng",
-		dataIndex: "totalGuests",
-		key: "totalGuests",
-		sorter: (a, b) => a.totalGuests - b.totalGuests,
+		dataIndex: "count",
+		key: "count",
+		// sorter: (a, b) => a.count - b.count,
 		// dataIndex: "tags",
 	},
 ];
 
 export const DashBoard = memo(() => {
 	const navigate = useNavigate();
-	const { dispatchLogOut } = useAuthenticationStore();
-	const [rangePicker, setRangePicker] = useState<any>(null);
-	// const onNavigateStaff = () => {
-	// 	navigation(AppRoutes.staff.index);
-	// };
+	const [date, setDate] = useState<any>(null);
+	const [data, setData] = useState<DataForDate[]>([]);
+	useEffect(() => {
+		const fetchData = async () => {
+			const data = await getNumberOfDataForDate();
+			if (data.status == true) {
+				setData(data.result);
+			}
+		};
 
-	const [data, setData] = useState<DataType[]>([
-		{
-			date: new Date(),
-			totalGuests: 32,
-		},
-		{
-			date: new Date("2024-12-01"),
-			totalGuests: 12,
-		},
-	]);
+		fetchData();
+	}, []);
 
-	const onLogout = () => {
-		// localStorage.removeItem(COMMONKEY.TOKEN)
-		dispatchLogOut();
-	};
-
-	const onDateChange = (values: any) => {
-		console.log(values);
-		// if (!values) {
-		// 	setLoading(true);
-		// 	fetchData();
-		// 	setLoading(false);
-		// 	return;
-		// }
-		const [startDate, endDate] = values.map((date: any) => new Date(date));
-
-		// Set startDate to the start of the day (00:00:00.000) and endDate to the end of the day (23:59:59.999)
-		startDate.setHours(0, 0, 0, 0);
-		endDate.setHours(23, 59, 59, 999);
-
-		const filtedData = data.filter((item) => {
-			const date = new Date(item.date);
-
-			// console.log('D', date, startDate, endDate);
-			return date >= startDate && date <= endDate;
-		});
-
-		setData(filtedData);
-	};
-
-	console.log("HI", rangePicker, data);
 	return (
 		<div style={{ padding: 12 }}>
-			{/* <button
-        style={{
-          borderWidth: 1,
-          padding: "10px 20px",
-          borderRadius: 8,
-          backgroundColor: "blue",
-        }}
-        onClick={onNavigateStaff}
-        type="button"
-      >
-        Staff
-      </button>
-      <button
-        style={{
-          borderWidth: 1,
-          padding: "10px 20px",
-          borderRadius: 8,
-          backgroundColor: "blue",
-        }}
-        onClick={onLogout}
-        type="button"
-      >
-        Logout
-      </button> */}
 			<Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
-				<RangePicker
-					value={rangePicker}
-					style={{ marginBottom: 12 }}
-					onChange={setRangePicker}
-					format="DD/MM/YYYY"
-				/>
-				<Table<DataType>
+				<div className="flex gap-4">
+					<DatePicker style={{ marginBottom: 12 }} format="DD/MM/YYYY" onChange={setDate} />
+					<Button
+						type="primary"
+						onClick={() =>
+							navigate(AppRoutes.customers.list, {
+								state: { date: date?.format("DD/MM/YYYY") || "" },
+							})
+						}
+					>
+						Xem thông tin ngày
+					</Button>
+				</div>
+				<Table<DataForDate>
 					columns={columns}
 					dataSource={
-						rangePicker
-							? data.filter(
-									(item) =>
-										item.date >= rangePicker[0].$d &&
-										item.date.getTime() <= new Date(rangePicker[1].$d).setHours(23, 59, 59, 999)
-									// eslint-disable-next-line no-mixed-spaces-and-tabs
-							  )
-							: data
+						// rangePicker
+						// 	? data.filter(
+						// 			(item) =>
+						// 				new Date(item.date).getTime >= rangePicker[0].$d.getTime() &&
+						// 				new Date(item.date).getTime() <=
+						// 					new Date(rangePicker[1].$d).setHours(23, 59, 59, 999)
+						// 			// eslint-disable-next-line no-mixed-spaces-and-tabs
+						// 	  )
+						data
 					}
+					rowKey={"date"}
 					onRow={(record) => ({
 						onClick: () => navigate(AppRoutes.customers.list, { state: { date: record.date || null } }),
 					})}

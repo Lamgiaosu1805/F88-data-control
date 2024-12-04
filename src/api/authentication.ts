@@ -1,6 +1,7 @@
 import { dataPostLoginType } from "@utils/types/auth_type";
 import axiosClient from "./axiosClient";
 import { endpoint } from "./endpoint";
+import { DataForDate } from "@utils/types";
 const loginRequestApi = (params: dataPostLoginType) => {
 	return axiosClient.post(endpoint.auth.login, params);
 };
@@ -9,7 +10,21 @@ const refreshTokenRequestApi = (params: any) => {
 	return axiosClient.post(endpoint.auth.refreshToken, params);
 };
 
-const getCustomers = (params: any) => {
-	return axiosClient.get(endpoint.customers.list, params);
+const getNumberOfDataForDate = (): Promise<{ status: boolean; result: DataForDate[] }> => {
+	return axiosClient.get(endpoint.f88.getAll);
 };
-export { loginRequestApi, refreshTokenRequestApi, getCustomers };
+
+const listDataForDate = (date: string): Promise<{ status: boolean; result: any }> => {
+	return axiosClient.get(endpoint.f88.listDate(date));
+};
+
+const getCustomerDetail = (id: string): Promise<{ status: boolean; result: any }> => {
+	return axiosClient.get(endpoint.customer.detail(id));
+};
+export {
+	loginRequestApi,
+	refreshTokenRequestApi,
+	getNumberOfDataForDate,
+	listDataForDate,
+	getCustomerDetail,
+};

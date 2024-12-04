@@ -5,8 +5,13 @@ export const endpoint = {
 		refreshToken: "auth/refresh-tokens",
 	},
 
-	customers: {
-		list: "customers/getCustomers ",
+	f88: {
+		getAll: "f88/getNumberOfDataForDate",
+		listDate: (date: string) => `f88/listDataForDate?date=${date}`,
+	},
+
+	customer: {
+		detail: (id: string) => `customer/${id}`,
 	},
 	catalog: {
 		create: "catalog",
