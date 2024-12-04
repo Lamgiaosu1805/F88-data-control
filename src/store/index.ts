@@ -1,4 +1,4 @@
-import { ThunkAction, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // import { Action } from "redux-saga";

@@ -3,7 +3,7 @@ import { memo, useCallback } from "react";
 import React from "react";
 import { Menu, MenuProps } from "antd";
 import { AppRoutes } from "@route/AppRoutes";
-import Dashboard from "@assets/svg/dashboard.svg";
+// import Dashboard from "@assets/svg/dashboard.svg";
 import { useNavigate } from "react-router-dom";
 type MenuItem = Required<MenuProps>["items"][number];
 

@@ -15,19 +15,19 @@ interface RefreshToken {
 	token: string;
 	expires: string;
 }
-interface inforUser {
-	active: boolean;
-	address: string;
-	avatar: string;
-	devicedId: string;
-	email: string;
-	id: string;
-	name: string;
-	phoneNumber: string;
-	role: string;
-	favouriteList: Array<object>;
-	isEmailVerified: boolean;
-}
+// interface inforUser {
+// 	active: boolean;
+// 	address: string;
+// 	avatar: string;
+// 	devicedId: string;
+// 	email: string;
+// 	id: string;
+// 	name: string;
+// 	phoneNumber: string;
+// 	role: string;
+// 	favouriteList: Array<object>;
+// 	isEmailVerified: boolean;
+// }
 
 export interface refreshTokensResultType {
 	access: AccessToken;
