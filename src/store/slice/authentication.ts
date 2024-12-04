@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
-import PopupNotification from "@helpers/popup-notification";
+// import PopupNotification from "@helpers/popup-notification";
 import { authenticationType, inforUser } from "@utils/types/auth_type";
 
 const initialState: authenticationType = {

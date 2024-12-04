@@ -1,4 +1,4 @@
-import { Badge, Button, Popover, Typography } from "@mui/material";
+import { Badge, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import NotiIcon from "../assets/svg/notification.svg";
 const NotificationHeader = () => {

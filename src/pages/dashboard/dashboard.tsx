@@ -42,7 +42,7 @@ export const DashBoard = memo(() => {
 		<div style={{ padding: 12 }}>
 			<Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
 				<div className="flex gap-4">
-					<DatePicker style={{ marginBottom: 12 }} format="DD/MM/YYYY" onChange={setDate} />
+					<DatePicker placeholder="Chọn ngày" style={{ marginBottom: 12 }} format="DD/MM/YYYY" onChange={setDate} />
 					<Button
 						type="primary"
 						onClick={() =>

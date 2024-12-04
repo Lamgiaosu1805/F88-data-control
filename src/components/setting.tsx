@@ -1,4 +1,4 @@
-import { Badge, Popover, Typography } from "@mui/material";
+import {  Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import Setting from "../assets/svg/setting.svg";
 const SettingHeader = () => {

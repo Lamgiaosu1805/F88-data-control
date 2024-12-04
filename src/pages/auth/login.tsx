@@ -79,8 +79,8 @@ export const Login = memo(() => {
 							</h1>
 							<Formik
 								initialValues={{
-									username: "vnfite_system",
-									password: "nghiemlamhust1",
+									username: "",
+									password: "",
 									isLoginAdmin: false,
 									checked: true,
 								}}
