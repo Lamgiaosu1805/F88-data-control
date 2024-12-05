@@ -2,7 +2,8 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { store } from "@store/index";
 
 const axiosClient = axios.create({
-	baseURL: "http://42.113.122.118:2003/api/v1/",
+	// baseURL: "http://42.113.122.118:2003/api/v1/",
+	baseURL: "https://chovaynganghang.com.vn/landing-page/api/v1",
 	headers: {
 		"Content-Type": "application/json",
 		"Access-Control-Allow-Origin": "*",

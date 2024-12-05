@@ -5,6 +5,7 @@ import { Menu, MenuProps } from "antd";
 import { AppRoutes } from "@route/AppRoutes";
 // import Dashboard from "@assets/svg/dashboard.svg";
 import { useNavigate } from "react-router-dom";
+import { DashboardFilled, DashboardOutlined } from "@ant-design/icons";
 type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
@@ -24,7 +25,7 @@ function getItem(
 }
 
 const items: MenuProps["items"] = [
-	getItem("DashBoard", AppRoutes.dashboard),
+	getItem(`DashBoard`, AppRoutes.dashboard, <DashboardOutlined />),
 	// getItem("Quản lý nhân viên", "1", <></>, [
 	// 	getItem("Danh sách nhân viên", AppRoutes.staff.index),
 	// 	getItem("Giao việc", "Option 2"),
