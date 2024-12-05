@@ -8,6 +8,8 @@ export const endpoint = {
 	f88: {
 		getAll: "f88/getNumberOfDataForDate",
 		listDate: (date: string) => `f88/listDataForDate?date=${date}`,
+		// updateStatus: (payload: any) => `f88/capNhatTrangThaiSauCallReport`,
+		updateStatus: `f88/capNhatTrangThaiSauCallReport`,
 	},
 
 	customer: {

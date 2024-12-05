@@ -21,10 +21,15 @@ const listDataForDate = (date: string): Promise<{ status: boolean; result: any }
 const getCustomerDetail = (id: string): Promise<{ status: boolean; result: any }> => {
 	return axiosClient.get(endpoint.customer.detail(id));
 };
+
+const updateStatus = (payload: any): Promise<{ status: boolean; result: any }> => {
+	return axiosClient.post(endpoint.f88.updateStatus, payload);
+};
 export {
 	loginRequestApi,
 	refreshTokenRequestApi,
 	getNumberOfDataForDate,
 	listDataForDate,
 	getCustomerDetail,
+	updateStatus,
 };

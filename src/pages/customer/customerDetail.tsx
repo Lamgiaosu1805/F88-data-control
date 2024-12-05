@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
-import { getCustomerDetail } from "@api/authentication";
+import { getCustomerDetail, updateStatus } from "@api/authentication";
 import { Paper } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { Button, Modal, Input, Popconfirm } from "antd";
+import { toast } from "react-toastify";
+const { TextArea } = Input;
 
 const renderKeyValue = (key = "", value = "", checkEnd?: boolean) => {
 	const check = checkEnd ?? false;
@@ -40,6 +43,8 @@ const renderKeyValue = (key = "", value = "", checkEnd?: boolean) => {
 
 const CustomerDetail = () => {
 	const [data, setData] = useState<any>([]);
+	const [openModal, setOpenmodal] = useState(false);
+	const [cancelReason, setCancelReason] = useState("");
 	const id = useLocation().state.id;
 
 	useEffect(() => {
@@ -53,7 +58,40 @@ const CustomerDetail = () => {
 		fetchData();
 	}, []);
 
-	console.log(data);
+	const handleUpdateStatus = async (type: number) => {
+		console.log("handleUpdateStatus", type);
+
+		if (type == 3) {
+			setOpenmodal(true);
+		} else {
+			const res = await updateStatus({
+				idCustomer: id,
+				status: type,
+				cancelReson: "",
+			});
+
+			if (res.status == true) {
+				toast.success("Đã cập nhật trạng thái thành công");
+			}
+		}
+	};
+
+	const confirmReject = async () => {
+		if (cancelReason == "") {
+			toast.error("Bạn chưa nhập lý do từ chối");
+			return;
+		}
+		const res = await updateStatus({
+			idCustomer: id,
+			status: 3,
+			cancelReson: cancelReason,
+		});
+
+		if (res.status == true) {
+			toast.success("Đã từ chối thành công");
+		}
+		setOpenmodal(false);
+	};
 	return (
 		<div className="p-4">
 			<Paper elevation={2} style={{ padding: 12, borderRadius: 16 }}>
@@ -79,11 +117,56 @@ const CustomerDetail = () => {
 					{renderKeyValue("Nơi làm việc", data.customerInfo?.work_place)}
 					{renderKeyValue(
 						"Tài sản thế chấp",
-						data.formPushInfo?.asset_type_id == 17 ? "Xe máy" : "Ô tô",
+						data.formPushInfo?.asset_type_id == 17 ? "Giấy phép xe máy" : "Giấy phép ô tô",
 						true
 					)}
 				</div>
+
+				<div className="my-10 flex justify-center items-center gap-3">
+					<Popconfirm
+						title="Cập nhật trạng thái"
+						description="Xác nhận cập nhật trạng thái đồng ý?"
+						onConfirm={() => handleUpdateStatus(4)}
+						okText="Xác nhận"
+						cancelText="Không"
+					>
+						<Button type="primary">Đồng ý</Button>
+					</Popconfirm>
+
+					<Popconfirm
+						title="Cập nhật trạng thái"
+						description="Xác nhận cập nhật trạng thái chưa quyết định?"
+						onConfirm={() => handleUpdateStatus(0)}
+						okText="Xác nhận"
+						cancelText="Không"
+					>
+						<Button type="default">Chưa quyết định</Button>
+					</Popconfirm>
+					<Button onClick={() => handleUpdateStatus(3)} danger>
+						Từ chối
+					</Button>
+				</div>
 			</Paper>
+
+			{/* Modal */}
+
+			<Modal
+				title={<p>Lý do từ chối</p>}
+				footer={
+					<Button type="primary" danger onClick={confirmReject}>
+						Xác nhận từ chối
+					</Button>
+				}
+				open={openModal}
+				onCancel={() => setOpenmodal(false)}
+			>
+				<TextArea
+					rows={4}
+					placeholder="Nhập lý do từ chối"
+					value={cancelReason}
+					onChange={(e) => setCancelReason(e.target.value)}
+				/>
+			</Modal>
 		</div>
 	);
 };
