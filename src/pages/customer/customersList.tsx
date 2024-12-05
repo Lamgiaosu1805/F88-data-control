@@ -27,11 +27,25 @@ const CustomerList = () => {
 			title: "Trạng thái chăm sóc",
 			dataIndex: "status",
 			key: "status",
-			render: (status: string) => (
-				<Tag color={status == "-1" ? "red" : "green"}>
-					{status == "-1" ? "Chưa chăm sóc" : "Đã chăm sóc"}
-				</Tag>
-			),
+			render: (status: number) => {
+				let tag;
+
+				switch (status) {
+					case 4:
+						tag = <Tag color="success">Đồng ý</Tag>;
+						break;
+					case 3:
+						tag = <Tag color="error">Từ chối</Tag>;
+						break;
+					case 0:
+						tag = <Tag color="warning">Chưa quyết định</Tag>;
+						break;
+					default:
+						tag = <Tag color="default">Chưa chăm sóc</Tag>;
+				}
+
+				return tag;
+			},
 		},
 		{
 			title: "Thành phố",
@@ -58,7 +72,7 @@ const CustomerList = () => {
 				const convertedData = res.result.data.map((item: any) => {
 					return {
 						...item.customer_info,
-						status: String(item.status),
+						status: item.status,
 					};
 				});
 
