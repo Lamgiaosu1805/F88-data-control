@@ -31,6 +31,9 @@ const CustomerList = () => {
 				let tag;
 
 				switch (status) {
+					case 5:
+						tag = <Tag color="processing">Khách hàng đã có khoản vay ở F88</Tag>;
+						break;
 					case 4:
 						tag = <Tag color="success">Đồng ý</Tag>;
 						break;

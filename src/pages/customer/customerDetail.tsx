@@ -59,7 +59,7 @@ const CustomerDetail = () => {
 	}, []);
 
 	const handleUpdateStatus = async (type: number) => {
-		console.log("handleUpdateStatus", type);
+		// console.log("handleUpdateStatus", type);
 
 		if (type == 3) {
 			setOpenmodal(true);
@@ -131,6 +131,16 @@ const CustomerDetail = () => {
 						cancelText="Không"
 					>
 						<Button type="primary">Đồng ý</Button>
+					</Popconfirm>
+
+					<Popconfirm
+						title="Cập nhật trạng thái"
+						description="Xác nhận cập nhật trạng thái khách hàng?"
+						onConfirm={() => handleUpdateStatus(5)}
+						okText="Xác nhận"
+						cancelText="Không"
+					>
+						<Button type="default">Đã có khoản vay ở F88</Button>
 					</Popconfirm>
 
 					<Popconfirm
